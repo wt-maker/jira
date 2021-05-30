@@ -7,7 +7,7 @@ import { useMount, useDebounce } from "utils";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
-export const ProjectListScreen = () => {
+const ProjectListScreen = () => {
   const [list, setList] = useState([]);
 
   const [users, setUsers] = useState([]);
@@ -44,3 +44,5 @@ export const ProjectListScreen = () => {
     </div>
   );
 };
+
+export default ProjectListScreen;
