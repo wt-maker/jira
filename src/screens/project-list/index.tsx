@@ -1,37 +1,31 @@
 import { useState, useEffect } from "react";
+import styled from "@emotion/styled";
+import { Typography } from "antd";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
-import { useMount, useDebounce } from "utils";
-import { useHttp } from "utils/http";
-import styled from "@emotion/styled";
+import { useProjects } from "utils/use-projects";
+import { useUsers } from "utils/use-users";
 
 const ProjectListScreen = () => {
-  const [list, setList] = useState([]);
-
-  const [users, setUsers] = useState([]);
-
   const [param, setParam] = useState({
     name: "",
     personId: "",
   });
 
-  const debouncedParam = useDebounce(param, 200);
+  const { data: list, error, isLoading } = useProjects(param);
 
-  const client = useHttp();
-
-  useEffect(() => {
-    client("projects", { data: debouncedParam }).then(setList);
-  }, [debouncedParam]);
-
-  useMount(() => {
-    client("users").then(setUsers);
-  });
+  const { data: users } = useUsers();
 
   return (
     <Container>
       <h1>项目列表</h1>
-      <SearchPanel param={param} setParam={setParam} users={users} />
-      <List list={list} users={users} />
+      <SearchPanel param={param} setParam={setParam} users={users || []} />
+      {error ? (
+        <Typography.Text type="danger">{error.message}</Typography.Text>
+      ) : (
+        ""
+      )}
+      <List loading={isLoading} dataSource={list || []} users={users || []} />
     </Container>
   );
 };
