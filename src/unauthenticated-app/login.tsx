@@ -1,18 +1,24 @@
 import { useAuth } from "context/auth-context";
 import { Form, Input } from "antd";
 import { LoginButton } from "./index";
+import { useAsync } from "utils/use-async";
 
-const LoginScreen = () => {
+const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
   const { login } = useAuth();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
 
-  const handleSubmit = ({
+  const handleSubmit = async ({
     username,
     password,
   }: {
     username: string;
     password: string;
   }) => {
-    login({ username, password });
+    try {
+      await run(login({ username, password }));
+    } catch (error) {
+      onError(error);
+    }
   };
 
   return (
@@ -29,7 +35,7 @@ const LoginScreen = () => {
       >
         <Input type="password" id="password" placeholder="密码"></Input>
       </Form.Item>
-      <LoginButton htmlType="submit" type="primary">
+      <LoginButton loading={isLoading} htmlType="submit" type="primary">
         登录
       </LoginButton>
     </Form>
