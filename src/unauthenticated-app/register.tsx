@@ -21,7 +21,7 @@ const RegisterScreen = () => {
         name="username"
         rules={[{ required: true, message: "请输入用户名" }]}
       >
-        <Input type="text" id="username"></Input>
+        <Input type="text" id="username" placeholder="用户名"></Input>
       </Form.Item>
       <Form.Item
         name="password"
