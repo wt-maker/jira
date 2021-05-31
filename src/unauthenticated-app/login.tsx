@@ -1,5 +1,5 @@
 import { useAuth } from "context/auth-context";
-import { Form, Input, Button } from "antd";
+import { Form, Input } from "antd";
 import { LoginButton } from "./index";
 
 const LoginScreen = () => {

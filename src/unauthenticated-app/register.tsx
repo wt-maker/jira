@@ -1,5 +1,5 @@
 import { useAuth } from "context/auth-context";
-import { Form, Input, Button } from "antd";
+import { Form, Input } from "antd";
 import { LoginButton } from "./index";
 
 const RegisterScreen = () => {
@@ -27,11 +27,11 @@ const RegisterScreen = () => {
         name="password"
         rules={[{ required: true, message: "请输入密码" }]}
       >
-        <Input type="password" id="password"></Input>
+        <Input type="password" id="password" placeholder="密码"></Input>
       </Form.Item>
-      <Button htmlType="submit" type="primary">
+      <LoginButton htmlType="submit" type="primary">
         注册
-      </Button>
+      </LoginButton>
     </Form>
   );
 };

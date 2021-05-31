@@ -16,9 +16,10 @@ const UnAuthenticatedApp = () => {
       <ShadowCard>
         <Title>{isRegister ? "请注册" : "请登录"}</Title>
         {isRegister ? <RegisterScreen /> : <LoginScreen />}
-        <SwitchLoginOrRegister onClick={() => setIsRegister(!isRegister)}>
+        <Divider />
+        <Button type="link" onClick={() => setIsRegister(!isRegister)}>
           {isRegister ? "已经有账号了？直接登录" : "没有账号？注册新账号"}
-        </SwitchLoginOrRegister>
+        </Button>
       </ShadowCard>
     </Container>
   );
@@ -66,11 +67,6 @@ const Title = styled.h2`
 
 export const LoginButton = styled(Button)`
   width: 100%;
-`;
-
-const SwitchLoginOrRegister = styled.a`
-  display: block;
-  margin-top: 2rem;
 `;
 
 export default UnAuthenticatedApp;
