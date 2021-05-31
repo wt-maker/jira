@@ -17,9 +17,9 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "json-server": "json-server --watch __json_server_mock__/db.json --port 3001 --middlewares ./__json_server_mock__/middleware.js"
@@ -46,7 +46,12 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@craco/craco": "^6.1.2",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
     "@types/qs": "^6.9.6",
+    "antd": "^4.16.0",
+    "craco-less": "^1.17.1",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^6.0.0",
     "jira-dev-tool": "^1.7.61",
