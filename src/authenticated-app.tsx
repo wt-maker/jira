@@ -4,9 +4,11 @@ import { Button, Dropdown, Menu } from "antd";
 import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { ReactComponent as SorfWareLogo } from "assets/software-logo.svg";
+import { useDocumentTitle } from "utils/use-document-title";
 
 const AuthenticatedApp = () => {
   const { user, logout } = useAuth();
+  useDocumentTitle("项目列表", false);
   return (
     <Container>
       <Header between={true}>
