@@ -13,6 +13,7 @@ export const useProjects = (param: Partial<Project>) => {
 
   useEffect(() => {
     run(client("projects", { data: debouncedParam }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedParam]);
 
   return {

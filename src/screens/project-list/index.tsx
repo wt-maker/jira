@@ -1,16 +1,13 @@
-import { useState } from "react";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useProjects } from "utils/use-projects";
 import { useUsers } from "utils/use-users";
+import { useQueryParam } from "utils/url";
 
 const ProjectListScreen = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  const [param, setParam] = useQueryParam(["name", "personId"]);
 
   const { data: list, error, isLoading } = useProjects(param);
 
