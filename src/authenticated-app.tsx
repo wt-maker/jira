@@ -5,40 +5,58 @@ import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { ReactComponent as SorfWareLogo } from "assets/software-logo.svg";
 import { useDocumentTitle } from "utils/use-document-title";
+import { Routes, Route, Navigate } from "react-router";
+import { BrowserRouter as Router } from "react-router-dom";
+import Project from "screens/project";
+import { resetRoute } from "utils";
 
 const AuthenticatedApp = () => {
-  const { user, logout } = useAuth();
   useDocumentTitle("项目列表", false);
   return (
     <Container>
-      <Header between={true}>
-        <HeaderLeft gap={true}>
-          <SorfWareLogo width="18rem" color="rgb(38, 132, 255)" />
-          <h2>项目</h2>
-          <h2>用户</h2>
-        </HeaderLeft>
-        <HeaderRight>
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item key="logout">
-                  <Button type="link" onClick={logout}>
-                    登出
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <Button type="link" onClick={(e) => e.preventDefault()}>
-              Hi, {user?.name}
-            </Button>
-          </Dropdown>
-        </HeaderRight>
-      </Header>
+      <PageHeader />
       <Main>
-        <ProjectListScreen />
+        <Router>
+          <Routes>
+            <Route path="/projects" element={<ProjectListScreen />}></Route>
+            <Route path="/projects/:projectId/*" element={<Project />}></Route>
+            <Navigate to="/projects" />
+          </Routes>
+        </Router>
       </Main>
     </Container>
+  );
+};
+
+const PageHeader = () => {
+  const { user, logout } = useAuth();
+  return (
+    <Header between={true}>
+      <HeaderLeft gap={true}>
+        <Button type="link" onClick={resetRoute}>
+          <SorfWareLogo width="18rem" color="rgb(38, 132, 255)" />
+        </Button>
+        <h2>项目</h2>
+        <h2>用户</h2>
+      </HeaderLeft>
+      <HeaderRight>
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key="logout">
+                <Button type="link" onClick={logout}>
+                  登出
+                </Button>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Button type="link" onClick={(e) => e.preventDefault()}>
+            Hi, {user?.name}
+          </Button>
+        </Dropdown>
+      </HeaderRight>
+    </Header>
   );
 };
 
