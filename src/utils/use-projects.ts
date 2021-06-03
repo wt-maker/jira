@@ -11,12 +11,52 @@ export const useProjects = (param: Partial<Project>) => {
 
   const debouncedParam = useDebounce(param, 200);
 
+  const fetchProject = () => client("projects", { data: debouncedParam });
+
   useEffect(() => {
-    run(client("projects", { data: debouncedParam }));
+    run(fetchProject(), {
+      retry: fetchProject,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedParam]);
 
   return {
     ...result,
+  };
+};
+
+export const useEditProject = () => {
+  const { run, ...rest } = useAsync();
+  const client = useHttp();
+  const mutate = (params: Partial<Project>) => {
+    return run(
+      client(`projects/${params.id}`, {
+        data: params,
+        method: "PATCH",
+      })
+    );
+  };
+
+  return {
+    mutate,
+    ...rest,
+  };
+};
+
+export const useAddProject = () => {
+  const { run, ...rest } = useAsync();
+  const client = useHttp();
+  const mutate = (params: Partial<Project>) => {
+    run(
+      client(`projects/${params.id}`, {
+        data: params,
+        method: "POST",
+      })
+    );
+  };
+
+  return {
+    mutate,
+    ...rest,
   };
 };

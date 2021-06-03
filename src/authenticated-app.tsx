@@ -4,14 +4,12 @@ import { Button, Dropdown, Menu } from "antd";
 import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { ReactComponent as SorfWareLogo } from "assets/software-logo.svg";
-import { useDocumentTitle } from "utils/use-document-title";
 import { Routes, Route, Navigate } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import Project from "screens/project";
 import { resetRoute } from "utils";
 
 const AuthenticatedApp = () => {
-  useDocumentTitle("项目列表", false);
   return (
     <Container>
       <PageHeader />

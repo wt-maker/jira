@@ -4,12 +4,15 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useProjects } from "utils/use-projects";
 import { useUsers } from "utils/use-users";
-import { useQueryParam } from "utils/url";
+import { useProjectSearchParams } from "./util";
+import { useDocumentTitle } from "utils/use-document-title";
 
 const ProjectListScreen = () => {
-  const [param, setParam] = useQueryParam(["name", "personId"]);
+  useDocumentTitle("项目列表", false);
 
-  const { data: list, error, isLoading } = useProjects(param);
+  const [param, setParam] = useProjectSearchParams();
+
+  const { data: list, error, isLoading, retry } = useProjects(param);
 
   const { data: users } = useUsers();
 
@@ -22,7 +25,12 @@ const ProjectListScreen = () => {
       ) : (
         ""
       )}
-      <List loading={isLoading} dataSource={list || []} users={users || []} />
+      <List
+        refresh={retry}
+        loading={isLoading}
+        dataSource={list || []}
+        users={users || []}
+      />
     </Container>
   );
 };

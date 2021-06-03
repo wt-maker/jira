@@ -45,10 +45,20 @@ export const useAsync = <T>(
     });
   };
 
-  const run = (promise: Promise<T>) => {
+  const [retry, setRetry] = useState(() => () => {});
+
+  const run = (
+    promise: Promise<T>,
+    runConfig?: { retry?: () => Promise<T> }
+  ) => {
     if (!promise || !promise.then) {
       throw new Error("请传入promise对象");
     }
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig);
+      }
+    });
     setState({
       ...state,
       status: "loading",
@@ -75,6 +85,7 @@ export const useAsync = <T>(
     run,
     setData,
     setError,
+    retry,
     ...state,
   };
 };
