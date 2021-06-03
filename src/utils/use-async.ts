@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useReducer, useCallback } from "react";
+import { useMountedRef } from "utils";
 
 interface State<T> {
   error: Error | null;
@@ -16,21 +17,38 @@ const defaultConfig = {
   throwOnError: false,
 };
 
+const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
+  const mountedRef = useMountedRef();
+  return useCallback(
+    (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
+    [dispatch, mountedRef]
+  );
+};
+
 export const useAsync = <T>(
   initialState?: State<T>,
   initialConfig?: typeof defaultConfig
 ) => {
+  const [state, dispatch] = useReducer(
+    (state: State<T>, action: Partial<State<T>>) => ({
+      ...state,
+      ...action,
+    }),
+    {
+      ...defaultInitialState,
+      ...initialState,
+    }
+  );
+
+  const safeDispatch = useSafeDispatch(dispatch);
+
   const config = {
     ...defaultConfig,
     ...initialConfig,
   };
-  const [state, setState] = useState<State<T>>({
-    ...defaultInitialState,
-    ...initialState,
-  });
 
   const setData = (data: T) => {
-    setState({
+    safeDispatch({
       data,
       status: "success",
       error: null,
@@ -38,7 +56,7 @@ export const useAsync = <T>(
   };
 
   const setError = (error: Error) => {
-    setState({
+    safeDispatch({
       data: null,
       status: "error",
       error,
@@ -59,7 +77,7 @@ export const useAsync = <T>(
         run(runConfig?.retry(), runConfig);
       }
     });
-    setState({
+    safeDispatch({
       ...state,
       status: "loading",
     });
