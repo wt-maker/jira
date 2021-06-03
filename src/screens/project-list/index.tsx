@@ -1,13 +1,18 @@
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Typography, Button } from "antd";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useProjects } from "utils/use-projects";
 import { useUsers } from "utils/use-users";
 import { useProjectSearchParams } from "./util";
 import { useDocumentTitle } from "utils/use-document-title";
+import { Row } from "components/lib";
 
-const ProjectListScreen = () => {
+const ProjectListScreen = ({
+  setProjectModalOpen,
+}: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectSearchParams();
@@ -18,7 +23,12 @@ const ProjectListScreen = () => {
 
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row between={true}>
+        <h1>项目列表</h1>
+        <Button type="link" onClick={() => setProjectModalOpen(true)}>
+          创建项目
+        </Button>
+      </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type="danger">{error.message}</Typography.Text>
@@ -30,6 +40,7 @@ const ProjectListScreen = () => {
         loading={isLoading}
         dataSource={list || []}
         users={users || []}
+        setProjectModalOpen={setProjectModalOpen}
       />
     </Container>
   );
