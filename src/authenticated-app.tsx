@@ -2,7 +2,7 @@ import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
 import { Button, Dropdown, Menu } from "antd";
 import styled from "@emotion/styled";
-import { Row } from "components/lib";
+import { NoPaddingButton, Row } from "components/lib";
 import { ReactComponent as SorfWareLogo } from "assets/software-logo.svg";
 import { Routes, Route, Navigate } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -15,17 +15,21 @@ import { ProjectModal } from "screens/project-list/project-modal";
 const AuthenticatedApp = () => {
   const [projectModalOpen, setProjectModalOpen] = useState(false);
 
+  const PorjectButton = (
+    <NoPaddingButton type="link" onClick={() => setProjectModalOpen(true)}>
+      创建项目
+    </NoPaddingButton>
+  );
+
   return (
     <Container>
-      <PageHeader setProjectModalOpen={setProjectModalOpen} />
+      <PageHeader projectButton={PorjectButton} />
       <Main>
         <Router>
           <Routes>
             <Route
               path="/projects"
-              element={
-                <ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
-              }
+              element={<ProjectListScreen projectButton={PorjectButton} />}
             ></Route>
             <Route path="/projects/:projectId/*" element={<Project />}></Route>
             <Navigate to="/projects" />
@@ -40,18 +44,14 @@ const AuthenticatedApp = () => {
   );
 };
 
-const PageHeader = ({
-  setProjectModalOpen,
-}: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const PageHeader = (props: { projectButton: JSX.Element }) => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <Button type="link" onClick={resetRoute}>
           <SorfWareLogo width="18rem" color="rgb(38, 132, 255)" />
         </Button>
-        <ProjectPopover setProjectModalOpen={setProjectModalOpen} />
+        <ProjectPopover {...props} />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Typography, Button } from "antd";
+import { Typography } from "antd";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useProjects } from "utils/use-projects";
@@ -8,11 +8,7 @@ import { useProjectSearchParams } from "./util";
 import { useDocumentTitle } from "utils/use-document-title";
 import { Row } from "components/lib";
 
-const ProjectListScreen = ({
-  setProjectModalOpen,
-}: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectSearchParams();
@@ -25,9 +21,7 @@ const ProjectListScreen = ({
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button type="link" onClick={() => setProjectModalOpen(true)}>
-          创建项目
-        </Button>
+        {props.projectButton}
       </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
@@ -40,7 +34,7 @@ const ProjectListScreen = ({
         loading={isLoading}
         dataSource={list || []}
         users={users || []}
-        setProjectModalOpen={setProjectModalOpen}
+        projectButton={props.projectButton}
       />
     </Container>
   );
