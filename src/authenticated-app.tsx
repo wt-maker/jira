@@ -2,21 +2,16 @@ import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
 import { Button, Dropdown, Menu } from "antd";
 import styled from "@emotion/styled";
-import { NoPaddingButton, Row } from "components/lib";
+import { Row } from "components/lib";
 import { ReactComponent as SorfWareLogo } from "assets/software-logo.svg";
 import { Routes, Route, Navigate } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import Project from "screens/project";
 import { resetRoute } from "utils";
-import { useState } from "react";
 import ProjectPopover from "components/project-popover";
 import { ProjectModal } from "screens/project-list/project-modal";
-import { useSelector, useDispatch } from "react-redux";
-import { selectProjectModalOpen } from "screens/project-list/project-list.slice";
 
 const AuthenticatedApp = () => {
-  const projectModalOpen = useSelector(selectProjectModalOpen);
-
   return (
     <Container>
       <PageHeader />
