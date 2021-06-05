@@ -65,8 +65,10 @@
     "prettier": "^2.3.0",
     "qs": "^6.10.1",
     "react-query": "^3.16.0",
+    "react-redux": "^7.2.4",
     "react-router": "^6.0.0-beta.0",
-    "react-router-dom": "^6.0.0-beta.0"
+    "react-router-dom": "^6.0.0-beta.0",
+    "redux": "^4.1.0"
   },
   "lint-staged": {
     "*.{js,ts,tsx,css}": [

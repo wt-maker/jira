@@ -7,9 +7,14 @@ import { useUsers } from "utils/use-users";
 import { useProjectSearchParams } from "./util";
 import { useDocumentTitle } from "utils/use-document-title";
 import { Row } from "components/lib";
+import { projectListActions } from "./project-list.slice";
+import { NoPaddingButton } from "components/lib";
+import { useDispatch } from "react-redux";
 
-const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
+const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
+
+  const dispatch = useDispatch();
 
   const [param, setParam] = useProjectSearchParams();
 
@@ -21,7 +26,12 @@ const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectButton}
+        <NoPaddingButton
+          type="link"
+          onClick={() => dispatch(projectListActions.openProjectModal())}
+        >
+          添加项目
+        </NoPaddingButton>
       </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
@@ -34,7 +44,6 @@ const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
         loading={isLoading}
         dataSource={list || []}
         users={users || []}
-        projectButton={props.projectButton}
       />
     </Container>
   );

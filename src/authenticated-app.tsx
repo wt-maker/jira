@@ -11,47 +11,37 @@ import { resetRoute } from "utils";
 import { useState } from "react";
 import ProjectPopover from "components/project-popover";
 import { ProjectModal } from "screens/project-list/project-modal";
+import { useSelector, useDispatch } from "react-redux";
+import { selectProjectModalOpen } from "screens/project-list/project-list.slice";
 
 const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
-
-  const PorjectButton = (
-    <NoPaddingButton type="link" onClick={() => setProjectModalOpen(true)}>
-      创建项目
-    </NoPaddingButton>
-  );
+  const projectModalOpen = useSelector(selectProjectModalOpen);
 
   return (
     <Container>
-      <PageHeader projectButton={PorjectButton} />
+      <PageHeader />
       <Main>
         <Router>
           <Routes>
-            <Route
-              path="/projects"
-              element={<ProjectListScreen projectButton={PorjectButton} />}
-            ></Route>
+            <Route path="/projects" element={<ProjectListScreen />}></Route>
             <Route path="/projects/:projectId/*" element={<Project />}></Route>
             <Navigate to="/projects" />
           </Routes>
         </Router>
       </Main>
-      <ProjectModal
-        visible={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+      <ProjectModal />
     </Container>
   );
 };
 
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <Button type="link" onClick={resetRoute}>
           <SorfWareLogo width="18rem" color="rgb(38, 132, 255)" />
         </Button>
-        <ProjectPopover {...props} />
+        <ProjectPopover />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
