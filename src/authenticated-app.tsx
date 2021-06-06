@@ -2,56 +2,41 @@ import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
 import { Button, Dropdown, Menu } from "antd";
 import styled from "@emotion/styled";
-import { NoPaddingButton, Row } from "components/lib";
+import { Row } from "components/lib";
 import { ReactComponent as SorfWareLogo } from "assets/software-logo.svg";
 import { Routes, Route, Navigate } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import Project from "screens/project";
 import { resetRoute } from "utils";
-import { useState } from "react";
 import ProjectPopover from "components/project-popover";
 import { ProjectModal } from "screens/project-list/project-modal";
 
 const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
-
-  const PorjectButton = (
-    <NoPaddingButton type="link" onClick={() => setProjectModalOpen(true)}>
-      创建项目
-    </NoPaddingButton>
-  );
-
   return (
     <Container>
-      <PageHeader projectButton={PorjectButton} />
-      <Main>
-        <Router>
+      <Router>
+        <PageHeader />
+        <Main>
           <Routes>
-            <Route
-              path="/projects"
-              element={<ProjectListScreen projectButton={PorjectButton} />}
-            ></Route>
+            <Route path="/projects" element={<ProjectListScreen />}></Route>
             <Route path="/projects/:projectId/*" element={<Project />}></Route>
             <Navigate to="/projects" />
           </Routes>
-        </Router>
-      </Main>
-      <ProjectModal
-        visible={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+        </Main>
+        <ProjectModal />
+      </Router>
     </Container>
   );
 };
 
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <Button type="link" onClick={resetRoute}>
           <SorfWareLogo width="18rem" color="rgb(38, 132, 255)" />
         </Button>
-        <ProjectPopover {...props} />
+        <ProjectPopover />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>

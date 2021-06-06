@@ -4,11 +4,11 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useProjects } from "utils/use-projects";
 import { useUsers } from "utils/use-users";
-import { useProjectSearchParams } from "./util";
+import { useProjectModalParams, useProjectSearchParams } from "./util";
 import { useDocumentTitle } from "utils/use-document-title";
-import { Row } from "components/lib";
+import { Row, NoPaddingButton } from "components/lib";
 
-const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
+const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectSearchParams();
@@ -17,11 +17,15 @@ const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
 
   const { data: users } = useUsers();
 
+  const { open } = useProjectModalParams();
+
   return (
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectButton}
+        <NoPaddingButton type="link" onClick={open}>
+          创建项目
+        </NoPaddingButton>
       </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
@@ -34,7 +38,6 @@ const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
         loading={isLoading}
         dataSource={list || []}
         users={users || []}
-        projectButton={props.projectButton}
       />
     </Container>
   );
