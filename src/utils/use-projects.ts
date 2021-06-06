@@ -1,62 +1,61 @@
-import { useEffect } from "react";
 import { Project } from "screens/project-list/list";
-import { useDebounce } from "utils";
 import { useHttp } from "./http";
-import { useAsync } from "./use-async";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
 
-  const { run, ...result } = useAsync<Project[]>();
-
-  const debouncedParam = useDebounce(param, 200);
-
-  const fetchProject = () => client("projects", { data: debouncedParam });
-
-  useEffect(() => {
-    run(fetchProject(), {
-      retry: fetchProject,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedParam]);
-
-  return {
-    ...result,
-  };
+  return useQuery<Project[]>(["projects", param], () => {
+    return client("projects", { data: param });
+  });
 };
 
 export const useEditProject = () => {
-  const { run, ...rest } = useAsync();
   const client = useHttp();
-  const mutate = (params: Partial<Project>) => {
-    return run(
+  const queryClient = useQueryClient();
+
+  const mutate = useMutation(
+    (params: Partial<Project>) =>
       client(`projects/${params.id}`, {
         data: params,
         method: "PATCH",
-      })
-    );
-  };
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("projects");
+      },
+    }
+  );
 
-  return {
-    mutate,
-    ...rest,
-  };
+  return mutate;
 };
 
 export const useAddProject = () => {
-  const { run, ...rest } = useAsync();
   const client = useHttp();
-  const mutate = (params: Partial<Project>) => {
-    run(
-      client(`projects/${params.id}`, {
+
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (params: Partial<Project>) =>
+      client(`projects`, {
         data: params,
         method: "POST",
-      })
-    );
-  };
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("projects");
+      },
+    }
+  );
+};
 
-  return {
-    mutate,
-    ...rest,
-  };
+export const useProject = (id?: number) => {
+  const client = useHttp();
+  return useQuery<Project>(
+    ["project", { id }],
+    () => client(`projects/${id}`),
+    {
+      enabled: Boolean(id),
+    }
+  );
 };

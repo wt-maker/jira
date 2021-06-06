@@ -18,23 +18,21 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-  refresh?: () => void;
 }
 
-export const List = ({ refresh, users, ...props }: ListProps) => {
-  const { mutate } = useEditProject();
+export const List = ({ users, loading, ...props }: ListProps) => {
+  const { mutate, isLoading: mutateLoading } = useEditProject();
 
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id: id, pin }).then(() => {
-      console.log(refresh);
-      refresh?.();
-    });
+  const { startEdit } = useProjectModalParams();
 
-  const { open } = useProjectModalParams();
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id: id, pin });
+
+  const editProject = (id: number) => () => startEdit(id);
 
   return (
     <Table
       rowKey={"id"}
+      loading={loading || mutateLoading}
       columns={[
         {
           title: <Pin checked={true} disabled={true}></Pin>,
@@ -86,10 +84,14 @@ export const List = ({ refresh, users, ...props }: ListProps) => {
                 overlay={
                   <Menu>
                     <Menu.Item key="edit">
-                      <NoPaddingButton type="link" onClick={open}>
-                        创建项目
+                      <NoPaddingButton
+                        type="link"
+                        onClick={editProject(project.id)}
+                      >
+                        编辑
                       </NoPaddingButton>
                     </Menu.Item>
+                    <Menu.Item key="delete">删除</Menu.Item>
                   </Menu>
                 }
               >

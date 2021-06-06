@@ -1,5 +1,7 @@
 import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQueryParam } from "utils/url";
+import { useProject } from "utils/use-projects";
 
 export const useProjectSearchParams = () => {
   const [param, setParam] = useQueryParam(["name", "personId"]);
@@ -17,13 +19,29 @@ export const useProjectModalParams = () => {
     "projectCreate",
   ]);
 
+  const [{ editingProjectId }, setEditingProjectId] = useQueryParam([
+    "editingProjectId",
+  ]);
+
+  const [_, setUrlParams] = useSearchParams();
+
+  const { data: editingProject, isLoading } = useProject(
+    Number(editingProjectId)
+  );
+
   const open = () => setProjectCreate({ projectCreate: true });
 
-  const close = () => setProjectCreate({ projectCreate: undefined });
+  const close = () => setUrlParams({ projectCreate: "", editingProjectId: "" });
+
+  const startEdit = (id: number) =>
+    setEditingProjectId({ editingProjectId: id });
 
   return {
-    projectModalOpen: projectCreate === "true",
+    projectModalOpen: projectCreate === "true" || !!editingProject,
     open,
     close,
+    editingProject,
+    startEdit,
+    isLoading,
   };
 };
