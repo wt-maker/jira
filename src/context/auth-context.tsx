@@ -5,6 +5,7 @@ import { http } from "utils/http";
 import { useMount } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageLoading, FullPageErrorCallBack } from "components/full-page";
+import { useQueryClient } from "react-query";
 
 interface AuthForm {
   username: string;
@@ -33,9 +34,15 @@ const AuthContext =
   >(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const queryClient = useQueryClient();
+
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
-  const logout = () => auth.logout().then(() => setUser(null));
+  const logout = () =>
+    auth.logout().then(() => {
+      setUser(null);
+      queryClient.clear();
+    });
 
   const {
     data: user,
