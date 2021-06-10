@@ -6,12 +6,13 @@ import {
   useDeleteConfig,
   useUpdataConfig,
 } from "./use-optimistic-options";
+import { cleanObject } from "utils";
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
-  return useQuery<Project[]>(["projects", param], () => {
-    return client("projects", { data: param });
-  });
+  return useQuery<Project[]>(["dsa", cleanObject(param)], () =>
+    client("projects", { data: param })
+  );
 };
 
 export const useEditProject = (queryKey: QueryKey) => {

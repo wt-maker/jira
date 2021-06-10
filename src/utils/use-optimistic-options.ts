@@ -7,7 +7,7 @@ export const useOptimisticOptions = (
   const queryClient = useQueryClient();
   return {
     onSuccess: () => {
-      queryClient.invalidateQueries("projects");
+      queryClient.invalidateQueries(queryKey);
     },
     onMutate: async (target: any) => {
       const previousData: any = queryClient.getQueryData(queryKey);

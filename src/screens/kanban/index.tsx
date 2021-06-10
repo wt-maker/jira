@@ -5,22 +5,32 @@ import styled from "@emotion/styled";
 import { useKanbans } from "utils/use-kanbans";
 import { SearchPanel } from "./search-panel";
 import { ScreenContainer } from "components/lib";
+import { Spin } from "antd";
+import { CreateKanban } from "./create-kanban";
+import { TaskModal } from "screens/kanban/task-modal";
 
 const Kanban = () => {
   useDocumentTitle("看板列表");
 
   const { data: currentProject } = useProjectInUrl();
-  const { data: kanbans } = useKanbans(useKanbanSearchParams());
+  const { data: kanbans, isLoading } = useKanbans(useKanbanSearchParams());
 
   return (
     <ScreenContainer>
       <h1>{currentProject?.name}看板</h1>
       <SearchPanel />
-      <ColumnsContainer>
-        {kanbans?.map((kanban) => (
-          <KanbanColumn key={kanban.id} kanban={kanban} />
-        ))}
-      </ColumnsContainer>
+
+      {isLoading ? (
+        <Spin size="large" />
+      ) : (
+        <ColumnsContainer>
+          {kanbans?.map((kanban) => (
+            <KanbanColumn key={kanban.id} kanban={kanban} />
+          ))}
+          <CreateKanban />
+        </ColumnsContainer>
+      )}
+      <TaskModal />
     </ScreenContainer>
   );
 };

@@ -33,6 +33,8 @@ const AuthContext =
     | undefined
   >(undefined);
 
+AuthContext.displayName = "AuthContext";
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useQueryClient();
 
