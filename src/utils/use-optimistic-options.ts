@@ -1,4 +1,6 @@
 import { QueryKey, useQueryClient } from "react-query";
+import { Task } from "types/task";
+import { reorder } from "./reorder";
 
 export const useOptimisticOptions = (
   queryKey: QueryKey,
@@ -43,3 +45,18 @@ export const useAddConfig = (queryKey: QueryKey) => {
     old ? [...old, target] : []
   );
 };
+
+export const useReorderKanbanConfig = (queryKey: QueryKey) =>
+  useOptimisticOptions(queryKey, (target, old) =>
+    reorder({ list: old, ...target })
+  );
+
+export const useReorderTaskConfig = (queryKey: QueryKey) =>
+  useOptimisticOptions(queryKey, (target, old) => {
+    const orderedList = reorder({ list: old, ...target }) as Task[];
+    return orderedList.map((item) =>
+      item.id === target.fromId
+        ? { ...item, kanbanId: target.toKanbanId }
+        : item
+    );
+  });
