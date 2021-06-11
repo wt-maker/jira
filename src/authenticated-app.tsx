@@ -9,6 +9,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Project from "screens/project";
 import { resetRoute } from "utils";
 import ProjectPopover from "components/project-popover";
+import { UserPopover } from "components/user-popover";
 import { ProjectModal } from "screens/project-list/project-modal";
 
 const AuthenticatedApp = () => {
@@ -37,7 +38,7 @@ const PageHeader = () => {
           <SorfWareLogo width="18rem" color="rgb(38, 132, 255)" />
         </Button>
         <ProjectPopover />
-        <span>用户</span>
+        <UserPopover />
       </HeaderLeft>
       <HeaderRight>
         <UserStatus />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Row, ScreenContainer } from "components/lib";
-import { useProjectInUrl, useTasksSearchParams } from "screens/kanban/utils";
+import { useProjectInUrl } from "screens/kanban/utils";
 import { useDeleteEpic, useEpics } from "utils/use-epics";
 import { Button, List, Modal } from "antd";
 import dayjs from "dayjs";

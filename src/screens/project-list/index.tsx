@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useProjects } from "utils/use-projects";
@@ -25,7 +24,7 @@ const ProjectListScreen = () => {
 
   return (
     <ScreenContainer>
-      <Row between={true}>
+      <Row between={true} marginBottom={2}>
         <h1>项目列表</h1>
         <NoPaddingButton type="link" onClick={open}>
           创建项目
