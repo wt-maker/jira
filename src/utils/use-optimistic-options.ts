@@ -42,7 +42,7 @@ export const useDeleteConfig = (queryKey: QueryKey) => {
 
 export const useAddConfig = (queryKey: QueryKey) => {
   return useOptimisticOptions(queryKey, (target, old) =>
-    old ? [...old, target] : []
+    old ? [...old, target] : [target]
   );
 };
 
